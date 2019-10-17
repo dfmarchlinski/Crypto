@@ -12,22 +12,16 @@ class Remove {
     private static void decrypt() {
 
         // Input hex ID
-        System.out.println("Enter hexadecimal identifier: ");
-        Scanner in = new Scanner(System.in);
-        String hex = in.nextLine();
+        System.out.println("\nEnter hexadecimal identifier: ");
+        String hex = new Scanner(System.in).nextLine();
 
         // ANALYZING DATA
         System.out.println("\nANALYZING DATA");
 
-        // Access files
-        File prv = new File("./Private/" + hex + ".key");
-        File pub = new File("./Public/" + hex + ".pub");
-        File msg = new File("./Message/" + hex);
-
         // Delete files and display deletion status
-        boolean prvBool = prv.delete();
-        boolean pubBool = pub.delete();
-        boolean msgBool = msg.delete();
+        boolean prvBool = new File("./Private/" + hex + ".key").delete();
+        boolean pubBool = new File("./Public/" + hex + ".pub").delete();
+        boolean msgBool = new File("./Message/" + hex).delete();
         System.out.println("\nPrivate key deleted: " + prvBool);
         System.out.println("Public key deleted: " + pubBool);
         System.out.println("Message deleted: " + msgBool);

@@ -6,7 +6,6 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;
@@ -25,16 +24,14 @@ class Decrypt {
     private static void decrypt() throws NoSuchPaddingException, NoSuchAlgorithmException, IOException, InvalidKeySpecException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
 
         // Input hex ID
-        System.out.println("Enter hexadecimal identifier: ");
-        Scanner in = new Scanner(System.in);
-        String hex = in.nextLine();
+        System.out.println("\nEnter hexadecimal identifier: ");
+        String hex = new Scanner(System.in).nextLine();
 
         // Initialize RSA cipher
         Cipher rsa = Cipher.getInstance("RSA");
 
         // Access private key and encrypted message
-        Path prvPath = Paths.get("./Private/" + hex + ".key");
-        byte[] prvBytes = Files.readAllBytes(prvPath);
+        byte[] prvBytes = Files.readAllBytes(Paths.get("./Private/" + hex + ".key"));
         PrivateKey prv = KeyFactory.getInstance("RSA").generatePrivate(new PKCS8EncodedKeySpec(prvBytes));
         byte[] keyBytes = Files.readAllBytes(Paths.get("./Message/" + hex));
 

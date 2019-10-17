@@ -33,7 +33,7 @@ public class Main {
     private static void integer(String input) throws NoSuchPaddingException, NoSuchAlgorithmException, IOException, BadPaddingException, IllegalBlockSizeException, InvalidKeyException, InvalidKeySpecException {
 
         // Determine if input is integer
-        int i = 0;
+        int i;
         try {
             i = Integer.parseInt(input);
         } catch (NumberFormatException | NullPointerException nfe) {

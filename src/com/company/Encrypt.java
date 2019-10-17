@@ -10,7 +10,6 @@ import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 import java.util.Scanner;
 
 class Encrypt {
@@ -22,9 +21,8 @@ class Encrypt {
     private static void encrypt() throws NoSuchAlgorithmException, NoSuchPaddingException, IOException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
 
         // Input message
-        System.out.println("Enter a message: ");
-        Scanner in = new Scanner(System.in);
-        String plain = in.nextLine();
+        System.out.println("\nEnter a message: ");
+        String plain = new Scanner(System.in).nextLine();
 
         // Generate hexadecimal ID for files
         System.out.println("\nGenerating hexadecimal identifier: ");
@@ -33,9 +31,9 @@ class Encrypt {
 
         // Generate keys
         System.out.println("\nGenerating 4096 bit RSA keys ...");
-        KeyPairGenerator kg = KeyPairGenerator.getInstance("RSA");
-        kg.initialize(4096);
-        KeyPair pair = kg.generateKeyPair();
+        KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA");
+        gen.initialize(4096);
+        KeyPair keys = gen.generateKeyPair();
         Cipher rsa = Cipher.getInstance("RSA");
 
         // ANALYZING DATA
@@ -45,24 +43,21 @@ class Encrypt {
         System.out.println("\nSaving keys to files ...");
         FileOutputStream prv = new FileOutputStream("./Private/" + hex + ".key");
         System.out.println("\nPrivate key location: ./Private/" + hex + ".key");
-        prv.write(pair.getPrivate().getEncoded());
+        prv.write(keys.getPrivate().getEncoded());
         prv.close();
         FileOutputStream pub = new FileOutputStream("./Public/" + hex + ".pub");
         System.out.println("Public key location: ./Public/" + hex + ".pub");
-        pub.write(pair.getPublic().getEncoded());
+        pub.write(keys.getPublic().getEncoded());
         pub.close();
 
         // Encrypt message
-        rsa.init(Cipher.ENCRYPT_MODE, pair.getPublic());
+        rsa.init(Cipher.ENCRYPT_MODE, keys.getPublic());
         byte[] encrypted = rsa.doFinal(plain.getBytes());
 
         // Save encrypted message
         FileOutputStream text = new FileOutputStream("./Message/" + hex);
+        System.out.println("Encrypted message location: ./Message/" + hex);
         text.write(encrypted);
         text.close();
-
-        // Display encrypted message and location
-        System.out.println("Encrypted message location: ./Message/" + hex);
-        System.out.println("\nEncrypted message: " + Arrays.toString(encrypted));
     }
 }
